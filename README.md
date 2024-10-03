@@ -58,6 +58,7 @@ Copy the store id and execute:
 
 ```shell
 export FGA_STORE_ID=<store-id>
+cd openfga
 fga model write --store-id=${FGA_STORE_ID} --file auth-model.json
 ```
 
@@ -84,7 +85,7 @@ FGA_STORE_ID=<store-id>
 FGA_MODEL_ID=<model-id>
 ```
 
-Run the API with:
+In the `final` dir, run the API with:
 
 ```shell
 npm install && npm run dev
@@ -116,11 +117,22 @@ curl -X POST \
 
 ## Add permission
 
-For creating a permission to view the document, run this fga command:
+For creating a permission to view the document, run this FGA CLI command:
+
+```shell
+fga tuple write --store-id=${FGA_STORE_ID} --model-id=$FGA_MODEL_ID 'user:<sub-claim>' viewer document:<document-id>
+```
+
+You can find the `sub` claim by decoding the access token at https://jwt.io/.
+
+For example:
 
 ```shell
 fga tuple write --store-id=${FGA_STORE_ID} --model-id=$FGA_MODEL_ID 'user:auth0|6434199152fb767f7eaed567' viewer document:66fd75790c1325dd8133f433
 ```
+
+You can add other relationship for the user and document like `owner`, `writer`.
+
 
 ## Help
 

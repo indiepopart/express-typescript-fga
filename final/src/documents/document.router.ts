@@ -1,11 +1,11 @@
 import express from "express";
 import { validateAccessToken } from "../middleware/auth0.middleware";
 import {
-  checkRequiredPermissions,
-  createPermission,
-  deletePermission,
-  getPermission,
-  updatePermission,
+  checkPermissions,
+  forCreate,
+  forDelete,
+  forView,
+  forUpdate,
 } from "../middleware/openfga.middleware";
 import {
   deleteDocumentById,
@@ -29,7 +29,7 @@ documentRouter.get("/", validateAccessToken, async (req, res, next) => {
 documentRouter.post(
   "/",
   validateAccessToken,
-  checkRequiredPermissions(createPermission),
+  checkPermissions(forCreate),
   async (req, res, next) => {
     try {
       const document = await saveDocument(req.body);
@@ -43,7 +43,7 @@ documentRouter.post(
 documentRouter.put(
   "/:id",
   validateAccessToken,
-  checkRequiredPermissions(updatePermission),
+  checkPermissions(forUpdate),
   async (req, res, next) => {
     try {
       const document = await updateDocument(req.params.id, req.body);
@@ -61,7 +61,7 @@ documentRouter.put(
 documentRouter.delete(
   "/:id",
   validateAccessToken,
-  checkRequiredPermissions(deletePermission),
+  checkPermissions(forDelete),
   async (req, res, next) => {
     try {
       const document = await deleteDocumentById(req.params.id);
@@ -79,7 +79,7 @@ documentRouter.delete(
 documentRouter.get(
   "/:id",
   validateAccessToken,
-  checkRequiredPermissions(getPermission),
+  checkPermissions(forView),
   async (req, res, next) => {
     try {
       const document = await findDocumentById(req.params.id);

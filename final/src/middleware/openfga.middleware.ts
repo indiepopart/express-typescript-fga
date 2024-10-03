@@ -16,7 +16,7 @@ const fgaClient = new OpenFgaClient({
   authorizationModelId: process.env.FGA_MODEL_ID, // Optional, can be overridden per request
 });
 
-export const getPermission = (req: Request): ClientCheckRequest => {
+export const forView = (req: Request): ClientCheckRequest => {
   const userId = req.auth?.payload.sub;
   const tuple = {
     user: `user:${userId}`,
@@ -26,7 +26,7 @@ export const getPermission = (req: Request): ClientCheckRequest => {
   return tuple;
 };
 
-export const updatePermission = (req: Request): ClientCheckRequest => {
+export const forUpdate = (req: Request): ClientCheckRequest => {
   const userId = req.auth?.payload.sub;
   const tuple = {
     user: `user:${userId}`,
@@ -36,7 +36,7 @@ export const updatePermission = (req: Request): ClientCheckRequest => {
   return tuple;
 };
 
-export const deletePermission = (req: Request): ClientCheckRequest => {
+export const forDelete = (req: Request): ClientCheckRequest => {
   const userId = req.auth?.payload.sub;
   const tuple = {
     user: `user:${userId}`,
@@ -46,7 +46,7 @@ export const deletePermission = (req: Request): ClientCheckRequest => {
   return tuple;
 };
 
-export const createPermission = (req: Request): ClientCheckRequest | null => {
+export const forCreate = (req: Request): ClientCheckRequest | null => {
   const userId = req.auth?.payload.sub;
   const parentId = req.body.parentId;
   const tuple = parentId
@@ -59,12 +59,12 @@ export const createPermission = (req: Request): ClientCheckRequest | null => {
   return tuple;
 };
 
-export const checkRequiredPermissions = (
-  permission: (req: Request) => ClientCheckRequest | null
+export const checkPermissions = (
+  createTuple: (req: Request) => ClientCheckRequest | null
 ) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const tuple = permission(req);
+      const tuple = createTuple(req);
 
       console.log("tuple", tuple);
 
