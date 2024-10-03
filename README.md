@@ -40,7 +40,7 @@ The first line in the command output will contain your Auth0 domain.
 
 ## Run OpenFGA with docker
 
-In the `final` dir, start up MongoDB and OpenFGA services:
+In the `final` dir, start MongoDB and OpenFGA services:
 
 ```shell
 docker compose up
@@ -54,14 +54,14 @@ export FGA_API_URL=http://localhost:8090
 fga store create --name "documents-fga"
 ```
 
-Copy the store id and execute:
+Copy the store ID and execute:
 
 ```shell
 export FGA_STORE_ID=<store-id>
 fga model write --store-id=${FGA_STORE_ID} --file auth-model.json
 ```
 
-Copy de model id and set it as environment variable:
+Copy the model ID and set it as an environment variable:
 
 ```shell
 export FGA_MODEL_ID=<model-id>
@@ -114,7 +114,7 @@ curl -i -X POST \
   http://localhost:6060/api/documents
 ```
 
-Then request the document with:
+Then request the document with the following cURL line:
 
 ```shell
 curl -i -H "Authorization: Bearer $ACCESS_TOKEN" localhost:6060/api/documents/<document-id>
@@ -128,7 +128,7 @@ For creating a permission to view the document, run this FGA CLI command:
 fga tuple write --store-id=${FGA_STORE_ID} --model-id=$FGA_MODEL_ID 'user:<sub-claim>' viewer document:<document-id>
 ```
 
-You can find the `sub` claim by decoding the access token at https://jwt.io/. Try adding other relationships for the user and document like `owner`, `writer`, enabling update and delete operations.
+You can find the `sub` claim by decoding the access token at https://jwt.io/. Try adding other relationships for the user and document like `owner` and `writer`, enabling update and delete operations.
 
 
 ## Help
