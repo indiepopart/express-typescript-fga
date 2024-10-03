@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import {
   InvalidTokenError,
   UnauthorizedError,
-  InsufficientScopeError,
 } from "express-oauth2-jwt-bearer";
 
 import { PermissionDenied } from "./openfga.middleware";
