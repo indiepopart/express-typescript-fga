@@ -1,9 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import {
-  InvalidTokenError,
-  UnauthorizedError,
-  InsufficientScopeError,
-} from "express-oauth2-jwt-bearer";
 
 import mongoose from "mongoose";
 
@@ -14,30 +9,6 @@ export const errorHandler = (
   next: NextFunction
 ) => {
   console.log(error);
-
-  if (error instanceof InsufficientScopeError) {
-    const message = "Permission denied";
-
-    response.status(error.status).json({ message });
-
-    return;
-  }
-
-  if (error instanceof InvalidTokenError) {
-    const message = "Bad credentials";
-
-    response.status(error.status).json({ message });
-
-    return;
-  }
-
-  if (error instanceof UnauthorizedError) {
-    const message = "Requires authentication";
-
-    response.status(error.status).json({ message });
-
-    return;
-  }
 
   if (error instanceof mongoose.Error.ValidationError) {
     const message = "Bad Request";
