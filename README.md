@@ -58,7 +58,6 @@ Copy the store id and execute:
 
 ```shell
 export FGA_STORE_ID=<store-id>
-cd openfga
 fga model write --store-id=${FGA_STORE_ID} --file auth-model.json
 ```
 
@@ -70,7 +69,7 @@ export FGA_MODEL_ID=<model-id>
 
 ## Run the Express API
 
-Copy `.env.example` to `.env` and replace the Auth0 domain, the store id and model id:
+Copy `.env.example` to `.env` and set the values for `<your-auth0-domain>`, the `<store-id>` and `<model-id>`:
 
 ```shell
 PORT=6060
@@ -99,20 +98,26 @@ Create a test access token:
 auth0 test token -a https://document-api.okta.com -s openid
 ```
 
-Save the access token in an environment variable:
+When prompted, choose any available client. Then, save the access token in an environment variable:
 
 ```shell
 ACCESS_TOKEN=<access-token>
 ```
 
-Use the access token to make a request to the API. Create document:
+Use the access token to make a POST request to the API. Create document:
 
 ```shell
-curl -X POST \
+curl -i -X POST \
   -H "Authorization:Bearer $ACCESS_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"name": "planning.doc"}' \
-  http://localhost:8080/document
+  http://localhost:6060/api/documents
+```
+
+Then request the document with:
+
+```shell
+curl -i -H "Authorization: Bearer $ACCESS_TOKEN" localhost:6060/api/documents/<document-id>
 ```
 
 ## Add permission
@@ -123,15 +128,7 @@ For creating a permission to view the document, run this FGA CLI command:
 fga tuple write --store-id=${FGA_STORE_ID} --model-id=$FGA_MODEL_ID 'user:<sub-claim>' viewer document:<document-id>
 ```
 
-You can find the `sub` claim by decoding the access token at https://jwt.io/.
-
-For example:
-
-```shell
-fga tuple write --store-id=${FGA_STORE_ID} --model-id=$FGA_MODEL_ID 'user:auth0|6434199152fb767f7eaed567' viewer document:66fd75790c1325dd8133f433
-```
-
-You can add other relationship for the user and document like `owner`, `writer`.
+You can find the `sub` claim by decoding the access token at https://jwt.io/. Try adding other relationships for the user and document like `owner`, `writer`, enabling update and delete operations.
 
 
 ## Help
