@@ -1,4 +1,4 @@
-# Add Fine Grained Authorization to an Express + Typescript API
+# Add Fine-Grained Authorization to an Express + Typescript API with OpenFGA
 
 This is a simplified Express + Typescript document API, for the purpose of demonstrating Fine-grained authorization (FGA) using OpenFGA, with Auth0 as the identity provider.
 
